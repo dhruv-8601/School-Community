@@ -1,0 +1,44 @@
+﻿@model Lab4.Models.ViewModels.CommunityViewModel
+@{
+    ViewData["Title"] = "EditMemberships";
+}
+
+<h1>Edit</h1>
+<h4>Student</h4>
+<hr />
+<form asp-action="EditMemberships">
+    <table class="table">
+        <tr>
+            <th>
+                Full Name &nbsp;
+            </th>
+            <th>
+                @Model.Students.First().FullName
+            </th>
+        </tr>
+    </table>
+    <hr />
+    <table class="table">
+        @foreach(var item in Model.Communities)
+        {
+            bool isValid = Model.CommunityMemberships.Where(community => community.CommunityID == item.ID).Count() > 0;
+                if (!isValid)
+                {
+                    <tr>
+                        <td>@item.Title &nbsp;</td>
+                        <td><a asp-action="AddMemberships" asp-route-id="@Model.Students.First().ID" asp-route-communityId="@item.ID">Register</a></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@item.Title &nbsp;</td>
+                        <td><a asp-action="DeleteMemberships" asp-route-id="@Model.Students.First().ID" asp-route-communityId="@item.ID">Unregister</a></td>
+                    </tr>
+                }
+        }
+    </table>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
